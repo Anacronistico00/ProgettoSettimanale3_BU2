@@ -32,6 +32,12 @@ namespace ProgettoSettimanale3_BU2.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
         {
+
+            if (User.Identity.IsAuthenticated)
+            {
+                return BadRequest(new { message = "Sei già loggato. Non puoi registrarti di nuovo." });
+            }
+
             var newUser = new ApplicationUser()
             {
                 Email = registerRequestDto.Email,
@@ -58,6 +64,12 @@ namespace ProgettoSettimanale3_BU2.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequestDto loginRequestDto)
         {
+
+            if (User.Identity.IsAuthenticated)
+            {
+                return BadRequest(new { message = "Sei già loggato." });
+            }
+
             var user = await _userManager.FindByEmailAsync(loginRequestDto.Email);
 
             var result = await _signInManager.PasswordSignInAsync(user, loginRequestDto.Password, false, false);
