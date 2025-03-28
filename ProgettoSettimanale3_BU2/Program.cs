@@ -115,6 +115,7 @@ try
 
     builder.Services.AddScoped<ArtistService>();
     builder.Services.AddScoped<EventService>();
+    builder.Services.AddScoped<TicketService>();
 
 
     builder.Host.UseSerilog();

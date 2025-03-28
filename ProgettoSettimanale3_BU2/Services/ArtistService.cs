@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProgettoSettimanale3_BU2.Data;
 using ProgettoSettimanale3_BU2.DTOs.Artista;
+using ProgettoSettimanale3_BU2.DTOs.Biglietto;
+using ProgettoSettimanale3_BU2.DTOs.Evento;
 using ProgettoSettimanale3_BU2.Models.Biglietteria;
 
 namespace ProgettoSettimanale3_BU2.Services
@@ -66,7 +68,7 @@ namespace ProgettoSettimanale3_BU2.Services
         {
             try
             {
-                return await _context.Artists.ToListAsync();
+                return await _context.Artists.Include(a => a.Eventi).ThenInclude(b => b.Biglietti).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -75,19 +77,33 @@ namespace ProgettoSettimanale3_BU2.Services
             }
         }
 
-        public async Task<List<ArtistDto>?> GetArtistsDtoAsync(List<Artist> students)
+        public async Task<List<GetArtistDto>?> GetArtistsDtoAsync(List<Artist> artists)
         {
             try
             {
-                List<ArtistDto> ArtistsDto = students.Select(s =>
-                    new ArtistDto()
+                List<GetArtistDto> ArtistsDto = artists.Select(s =>
+                    new GetArtistDto()
                     {
                         ArtistaId = s.ArtistaId,
                         Nome = s.Nome,
                         Genere = s.Genere,
                         Biografia = s.Biografia,
-                    }
-                ).ToList();
+                        Eventi = s.Eventi != null ? 
+                        s.Eventi.Select(e => new EventDto()
+                        {
+                            Titolo = e.Titolo,
+                            Data = e.Data,
+                            Luogo = e.Luogo,
+                            Biglietti = e.Biglietti != null
+                                ? e.Biglietti.Select(b => new TicketDto()
+                                {
+                                    UserId = b.UserId,
+                                    DataAcquisto = b.DataAcquisto,
+                                }).ToList()
+                                : null,
+                        }).ToList() 
+                        :null,
+                    }).ToList();
                 return ArtistsDto;
             }
             catch (Exception ex)
@@ -97,20 +113,38 @@ namespace ProgettoSettimanale3_BU2.Services
             }
         }
 
-        public async Task<ArtistDto?> GetArtistDtoByIdAsync(int id)
+        public async Task<GetArtistDto?> GetArtistDtoByIdAsync(int id)
         {
             try
             {
-                var artist = await _context.Artists.Include(s => s.Eventi).FirstOrDefaultAsync(s => s.ArtistaId == id);
-
-                var artistDto = new ArtistDto()
+                var artist = await _context.Artists.Include(s => s.Eventi).ThenInclude(b => b.Biglietti).FirstOrDefaultAsync(s => s.ArtistaId == id);
+                if(artist != null)
                 {
-                    ArtistaId = artist.ArtistaId,
-                    Nome = artist.Nome,
-                    Genere = artist.Genere,
-                    Biografia = artist.Biografia,
-                };
+                var artistDto = new GetArtistDto()
+                    {
+                        ArtistaId = artist.ArtistaId,
+                        Nome = artist.Nome,
+                        Genere = artist.Genere,
+                        Biografia = artist.Biografia,
+                        Eventi = artist.Eventi != null ?
+                            artist.Eventi.Select(e => new EventDto()
+                            {
+                                Titolo = e.Titolo,
+                                Data = e.Data,
+                                Luogo = e.Luogo,
+                                Biglietti = e.Biglietti != null
+                                    ? e.Biglietti.Select(b => new TicketDto()
+                                    {
+                                        UserId = b.UserId,
+                                        DataAcquisto = b.DataAcquisto,
+                                    }).ToList()
+                                    : null,
+                            }).ToList()
+                            : null,
+                    };
                 return artistDto;
+                }
+                return null;
             }
             catch (Exception ex)
             {
@@ -123,7 +157,7 @@ namespace ProgettoSettimanale3_BU2.Services
         {
             try
             {
-                var existingArtist = await _context.Artists.Include(s => s.Eventi).FirstOrDefaultAsync(s => s.ArtistaId == id);
+                var existingArtist = await _context.Artists.FirstOrDefaultAsync(s => s.ArtistaId == id);
 
                 if (existingArtist == null)
                 {
@@ -144,7 +178,7 @@ namespace ProgettoSettimanale3_BU2.Services
         {
             try
             {
-                var existingArtist = await _context.Artists.Include(s => s.Eventi).FirstOrDefaultAsync(s => s.ArtistaId == id);
+                var existingArtist = await _context.Artists.FirstOrDefaultAsync(s => s.ArtistaId == id);
 
                 if (existingArtist == null)
                 {

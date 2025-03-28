@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ProgettoSettimanale3_BU2.DTOs.Artista
+namespace ProgettoSettimanale3_BU2.DTOs.Evento
 {
-    public class GetArtistResponseDto
+    public class GetEventResponseDto
     {
         [Required]
         public required string Message { get; set; }
 
         [Required]
-        public List<GetArtistDto> Artists { get; set; }
+
+        public List<GetEventDto>? Events { get; set; }
     }
 }

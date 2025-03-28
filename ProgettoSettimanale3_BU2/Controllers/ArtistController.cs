@@ -5,6 +5,7 @@ using ProgettoSettimanale3_BU2.Data;
 using ProgettoSettimanale3_BU2.DTOs.Artista;
 using ProgettoSettimanale3_BU2.Models.Biglietteria;
 using ProgettoSettimanale3_BU2.Services;
+using System.Security.Claims;
 
 namespace ProgettoSettimanale3_BU2.Controllers
 {
@@ -33,7 +34,7 @@ namespace ProgettoSettimanale3_BU2.Controllers
             {
                 return BadRequest(new
                 {
-                    message = "Failed to create a new student!!!"
+                    message = "Failed to create a new artist!!!"
                 }
                 );
             }
@@ -52,10 +53,11 @@ namespace ProgettoSettimanale3_BU2.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetStudents()
+        public async Task<IActionResult> GetArtist()
         {
             try
             {
+
                 List<Artist> artists = await _artistService.GetArtistsAsync();
 
                 if (artists == null)

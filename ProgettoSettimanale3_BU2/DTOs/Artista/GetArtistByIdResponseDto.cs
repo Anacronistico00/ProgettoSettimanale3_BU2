@@ -8,6 +8,6 @@ namespace ProgettoSettimanale3_BU2.DTOs.Artista
         public required string Message { get; set; }
 
         [Required]
-        public required ArtistDto Artist { get; set; }
+        public required GetArtistDto Artist { get; set; }
     }
 }

@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using ProgettoSettimanale3_BU2.DTOs.Artista;
+using ProgettoSettimanale3_BU2.Models.Biglietteria;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProgettoSettimanale3_BU2.DTOs.Evento
 {
-    public class CreateEventRequestDto
+    public class EventTicketDto
     {
         [Required]
         [StringLength(200)]
@@ -16,6 +17,6 @@ namespace ProgettoSettimanale3_BU2.DTOs.Evento
         [StringLength(100)]
         public required string Luogo { get; set; }
 
-        public int ArtistaId { get; set; }
+        public ArtistDto Artista { get; set; }
     }
 }

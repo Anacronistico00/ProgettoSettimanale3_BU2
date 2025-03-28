@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ProgettoSettimanale3_BU2.DTOs.Evento
 {
-    public class CreateEventRequestDto
+    public class UpdateEventRequestDto
     {
         [Required]
         [StringLength(200)]

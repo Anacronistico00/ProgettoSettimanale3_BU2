@@ -1,12 +1,13 @@
 ﻿using ProgettoSettimanale3_BU2.Models.Auth;
-using System.ComponentModel.DataAnnotations;
+using ProgettoSettimanale3_BU2.Models.Biglietteria;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProgettoSettimanale3_BU2.DTOs.Biglietto
 {
-    public class TicketDto
+    public class UpdateTicketRequestDto
     {
-        public string UserId { get; set; }
+        public int EventoId { get; set; }
 
         [Required]
         public DateTime DataAcquisto { get; set; }

@@ -73,6 +73,7 @@ namespace ProgettoSettimanale3_BU2.Controllers
 
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
             claims.Add(new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
