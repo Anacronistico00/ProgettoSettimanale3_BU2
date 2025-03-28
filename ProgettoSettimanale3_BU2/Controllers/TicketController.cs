@@ -55,6 +55,7 @@ namespace ProgettoSettimanale3_BU2.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetTickets()
         {
             try
@@ -95,6 +96,7 @@ namespace ProgettoSettimanale3_BU2.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> getTicketById(int id)
         {
             var result = await _ticketService.GetTicketDtoByIdAsync(id);

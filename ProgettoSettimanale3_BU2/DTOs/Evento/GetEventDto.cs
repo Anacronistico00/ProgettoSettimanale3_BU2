@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ProgettoSettimanale3_BU2.DTOs.Artista;
 using ProgettoSettimanale3_BU2.DTOs.Biglietto;
 
 namespace ProgettoSettimanale3_BU2.DTOs.Evento
@@ -21,6 +22,6 @@ namespace ProgettoSettimanale3_BU2.DTOs.Evento
 
         public int ArtistaId { get; set; }
 
-        public ICollection<TicketDto>? Biglietti { get; set; }
+        public ArtistDto Artista { get; set; }
     }
 }

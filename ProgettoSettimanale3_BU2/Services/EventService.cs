@@ -71,7 +71,7 @@ namespace ProgettoSettimanale3_BU2.Services
         {
             try
             {
-                return await _context.Events.Include(b => b.Biglietti).ToListAsync();
+                return await _context.Events.Include(a => a.Artista).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -92,13 +92,12 @@ namespace ProgettoSettimanale3_BU2.Services
                     Data = e.Data,
                     Luogo= e.Luogo,
                     ArtistaId = e.ArtistaId,
-                    Biglietti = e.Biglietti != null
-                        ? e.Biglietti.Select(b => new TicketDto()
-                        {
-                            UserId = b.UserId,
-                            DataAcquisto = b.DataAcquisto,
-                        }).ToList()
-                        : null,
+                    Artista = new ArtistDto()
+                    {
+                        Nome = e.Artista.Nome,
+                        Genere = e.Artista.Genere,
+                        Biografia = e.Artista.Biografia,
+                    },
                 }).ToList();
 
                 return eventDtos;
@@ -114,7 +113,7 @@ namespace ProgettoSettimanale3_BU2.Services
         {
             try
             {
-                var eventById = await _context.Events.Include(b => b.Biglietti).FirstOrDefaultAsync(s => s.EventoId == id);
+                var eventById = await _context.Events.Include(a => a.Artista).FirstOrDefaultAsync(s => s.EventoId == id);
                 if(eventById != null)
                 {
                     var eventDto = new GetEventDto()
@@ -124,13 +123,12 @@ namespace ProgettoSettimanale3_BU2.Services
                         Data = eventById.Data,
                         Luogo = eventById.Luogo,
                         ArtistaId = eventById.ArtistaId,
-                        Biglietti = eventById.Biglietti != null
-                        ? eventById.Biglietti.Select(b => new TicketDto()
+                        Artista = new ArtistDto()
                         {
-                            UserId = b.UserId,
-                            DataAcquisto = b.DataAcquisto,
-                        }).ToList()
-                        : null,
+                            Nome = eventById.Artista.Nome,
+                            Genere = eventById.Artista.Genere,
+                            Biografia = eventById.Artista.Biografia,
+                        }
                     };
                 return eventDto;
                 }
